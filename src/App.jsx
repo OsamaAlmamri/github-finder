@@ -1,36 +1,49 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Navbar from './components/layout/Navbar'
+import Footer from './components/layout/Footer'
+import Alert from './components/layout/Alert'
+import Home from './pages/Home'
+import About from './pages/About'
+import User from './pages/User'
+import NotFound from './pages/NotFound'
+import { GithubProvider } from './context/github/GithubContext.jsx'
+import { AlertProvider } from './context/alert/AlertContext.jsx'
+
+// NOTE: Alert is only used on the '/' route moving to that route we can prevent
+// content shift when alert shows by hiding and unhiding the Alert rather than
+// conditionally rendering
 
 function App() {
-    const [count, setCount] = useState(0)
-
     return (
-        <div className="App">
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src="/vite.svg" className="logo" alt="Vite logo"/>
-                </a>
-                <a href="https://reactjs.org" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo"/>
-                </a>
-            </div>
+        <GithubProvider>
+            <AlertProvider>
+                <Router>
+                    <div className='flex flex-col justify-between h-screen'>
+                        <Navbar />
 
-            <h1 className="bg-amber-300 text-4xl text-amber-600">Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-                {import.meta.env.VITE_REACT_APP_GITHUB_URL}
-                {import.meta.env.VITE_REACT_APP_GITHUB_TOKEN}
-            </p>
-        </div>
+                        <main className='container mx-auto px-3 pb-12'>
+                            <Routes>
+                                <Route
+                                    path='/'
+                                    element={
+                                        <>
+                                            <Alert />
+                                            <Home />
+                                        </>
+                                    }
+                                />
+                                <Route path='/about' element={<About />} />
+                                <Route path='/user/:login' element={<User />} />
+                                <Route path='/notfound' element={<NotFound />} />
+                                <Route path='*' element={<NotFound />} />
+                            </Routes>
+                        </main>
+
+                        <Footer />
+                    </div>
+                </Router>
+            </AlertProvider>
+        </GithubProvider>
     )
 }
 

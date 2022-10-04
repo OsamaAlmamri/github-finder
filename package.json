@@ -13,6 +13,7 @@
     "dev2": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "concurrently": "^7.4.0",
     "daisyui": "^2.31.0",
     "framer-motion": "^7.3.6",
